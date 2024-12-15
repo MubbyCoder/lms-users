@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import { toast } from "react-toastify";
@@ -8,15 +7,15 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { register } = useContext(AuthContext);
+  const { register } = useContext(AuthContext);  // Accessing register from context
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(name, email, password);
-      toast.success("Signup successful! Redirecting to login...");
-      navigate("/login");
+      await register(name, email, password);  // Call register function from context
+      toast.success("Signup successful! You can now log in.");
+      navigate("/login");  // Redirect to login page after signup
     } catch (error) {
       toast.error("Signup failed. Please try again.");
     }

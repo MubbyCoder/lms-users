@@ -1,6 +1,6 @@
 // import React from "react";
-import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
+// import Sidebar from "../components/Sidebar";
+// import Footer from "../components/Footer";
 import bookImage from "../assets/images/bookcover.jpg";
 const Dashboard = () => {
   return (
@@ -8,11 +8,11 @@ const Dashboard = () => {
       <div className=" w-[full] h-[20%] border-2 border-gray-800 "></div>
       {/* Sidebar Section */}
       <div className="bg-gray-900">
-        <Sidebar />
+        {/* <Sidebar /> */}
       </div>
 
       {/* Main Content Section */}
-      <div className="flex-col ml-20 md:ml-64">
+      <div className="flex-col ">
         {/* First Section: Introductory Content */}
         <section className="py-12 px-6 md:py-16 md:px-12">
           <div className="container mx-auto flex flex-col md:flex-row items-center md:items-start space-y-8 md:space-y-0 md:space-x-12">
@@ -90,7 +90,7 @@ const Dashboard = () => {
                 </p>
               </div>
             </div>
-            <button className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-gray-900 rounded-lg shadow hover:to-yellow-500 transition-all duration-300">
+            <button className="px-6 py-3 mt-8 bg-gradient-to-r from-yellow-400 to-yellow-600 text-gray-900 rounded-lg shadow hover:to-yellow-500 transition-all duration-300">
               Get Started
             </button>
 
@@ -148,9 +148,9 @@ const Dashboard = () => {
             </div>
           </div>
         </section>
-        <div className="border-t-2 border-dotted ">
+        {/* <div className="border-t-2 border-dotted ">
           <Footer />
-        </div>
+        </div>  */}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
+// import Sidebar from "../components/Sidebar";
+// import Footer from "../components/Footer";
 
 const Blog = () => {
   const [expandedPost, setExpandedPost] = useState(null);
@@ -12,9 +12,9 @@ const Blog = () => {
   return (
     <div className="flex min-h-screen bg-gray-900 text-white">
       {/* Sidebar Section */}
-      <div className="w-64 bg-gray-900">
+      {/* <div className="w-64 bg-gray-900">
         <Sidebar />
-      </div>
+      </div> */}
 
       {/* Main Content Section */}
       <div className="flex-grow flex flex-col px-4 md:px-8 max-w-screen mx-auto">
@@ -102,9 +102,9 @@ const Blog = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-48 border-t border-gray-800">
+        {/* <div className="mt-48 border-t border-gray-800">
           <Footer />
-        </div>
+        </div> */}
       </div>
     </div>
   );

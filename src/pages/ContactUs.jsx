@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
+// import Sidebar from "../components/Sidebar";
+// import Footer from "../components/Footer";
 // import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from 'react-toastify';
@@ -49,9 +49,9 @@ const ContactUs = () => {
   return (
     <div className="flex min-h-screen bg-gray-900 text-white">
       {/* Sidebar */}
-      <div className="w-64 bg-gray-900">
+      {/* <div className="w-64 bg-gray-900">
         <Sidebar />
-      </div>
+      </div> */}
 
       {/* Main Content */}
       <div className="flex-grow flex flex-col px-4 md:px-8">
@@ -148,9 +148,9 @@ const ContactUs = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-12 border-t border-gray-800">
+        {/* <div className="mt-12 border-t border-gray-800">
           <Footer />
-        </div>
+        </div> */}
       </div>
 
       {/* Toast Notifications */}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 
 
 const Layout = ({ children }) => {
@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
       {/* Header Section */}
       <header className="bg-primary text-white p-4 shadow-md fixed top-0 left-0 w-full z-50">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-lg sm:text-2xl font-bold">Bookify</h1>
+          <h1 className="text-lg sm:text-2xl font-bold">BookWorm</h1>
           <nav className="hidden sm:flex space-x-4">
             <Link to="/" className="hover:text-primary-light text-base sm:text-lg">Home</Link>
             <Link to="/about" className="hover:text-primary-light text-base sm:text-lg">About</Link>
@@ -45,7 +45,7 @@ const Layout = ({ children }) => {
           {children}
         </main>
       </div>
-      <Footer/>
+      {/* <Footer/> */}
     </div>
   );
 };

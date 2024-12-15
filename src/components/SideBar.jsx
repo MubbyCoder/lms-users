@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaBook,
-  FaUsers,
+
   FaBlog,
   FaPhone,
   FaSignOutAlt,
@@ -12,9 +12,10 @@ import logo from "../assets/images/bookcover.jpg"; // Adjust the path to your lo
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   const navItems = [
+    { path: "/", name: "Books", icon: <FaBook /> },
+
     { path: "/dashboard", name: "Dashboard", icon: <FaTachometerAlt /> },
-    { path: "/books", name: "Books", icon: <FaBook /> },
-    { path: "/users", name: "Users", icon: <FaUsers /> },
+    // { path: "/users", name: "Us", icon: <FaUsers /> },
     { path: "/blog", name: "Blogs", icon: <FaBlog /> },
     { path: "/contactus", name: "Contact Us", icon: <FaPhone /> },
   ];
@@ -41,7 +42,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             key={index}
             onClick={() => setIsMenuOpen(false)} // Close menu on click
             className={({ isActive }) =>
-              `flex items-center px-6 py-3 rounded-lg hover:bg-gray-700 ${
+              `flex items-center px-6 mt-2 py-3 rounded-lg hover:bg-gray-700 ${
                 isActive ? "bg-gray-700" : ""
               }`
             }

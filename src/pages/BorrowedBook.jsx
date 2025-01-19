@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Modal from "react-modal";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../components/sidebar.jsx";
 import { FaStar } from "react-icons/fa";
 
 const BorrowedBook = () => {

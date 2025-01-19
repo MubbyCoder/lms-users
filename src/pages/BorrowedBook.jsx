@@ -37,7 +37,7 @@ const BorrowedBook = () => {
     };
 
     fetchBorrowedBooks();
-  }, []);
+  }, );
 
   const handleReturn = async (id) => {
     try {

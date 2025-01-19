@@ -24,7 +24,7 @@ const Home = () => {
     };
 
     fetchBooks();
-  }, []);
+  });
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -47,7 +47,7 @@ const Home = () => {
     };
 
     fetchReviews();
-  }, []);
+  });
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) {

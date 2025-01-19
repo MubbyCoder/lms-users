@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; //
 
+
+const apiUrl = import.meta.env.VITE_API_URL;
 const ContactUs = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -26,7 +28,7 @@ const ContactUs = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5017/api/contactus", {
+      const response = await fetch(`${apiUrl}/contactus`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 // import React from "react";
-import Sidebar from "../components/sidebar.jsx";
+import Sidebar from "../components/Sidebar.jsx";
 import Footer from "../components/Footer";
 import bookImage from "../assets/images/gettyimage.jpg";
 const Dashboard = () => {

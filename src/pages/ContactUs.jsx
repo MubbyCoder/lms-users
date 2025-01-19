@@ -1,9 +1,9 @@
 import { useState } from "react";
-// import Sidebar from "../components/Sidebar";
-// import Footer from "../components/Footer";
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from 'react-toastify';
+import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; //
 
 const ContactUs = () => {
@@ -49,9 +49,9 @@ const ContactUs = () => {
   return (
     <div className="flex min-h-screen bg-gray-900 text-white">
       {/* Sidebar */}
-      {/* <div className="w-64 bg-gray-900">
+      <div className="w-64 bg-gray-900">
         <Sidebar />
-      </div> */}
+      </div>
 
       {/* Main Content */}
       <div className="flex-grow flex flex-col px-4 md:px-8">
@@ -67,7 +67,7 @@ const ContactUs = () => {
             className="p-6 bg-gray-800 rounded-lg shadow-lg space-y-6"
           >
             <h2 className="text-2xl font-semibold text-yellow-400">
-              Get in Touch
+              Request for books
             </h2>
             <p className="text-gray-400">
               Fill out the form below, or message us on WhatsApp!
@@ -148,9 +148,9 @@ const ContactUs = () => {
         </div>
 
         {/* Footer */}
-        {/* <div className="mt-12 border-t border-gray-800">
+        <div className="mt-12 border-t border-gray-800">
           <Footer />
-        </div> */}
+        </div>
       </div>
 
       {/* Toast Notifications */}

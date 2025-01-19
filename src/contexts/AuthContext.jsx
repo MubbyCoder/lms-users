@@ -56,7 +56,8 @@ const AuthProvider = ({ children }) => {
       const { token, user } = response.data.data;
       saveAuthData(token, user);
       toast.success("Signup successful!");
-      navigate("/");
+      navigate("/dashboard");
+      alert("Confirm your email address to continue");
     } catch (error) {
       handleApiError(error, "Signup failed. Please try again.");
     } finally {
@@ -132,14 +133,29 @@ const AuthProvider = ({ children }) => {
 
   // Logout function
   const logout = () => {
-      setToken(null);
-      setUser(null);
-      setEmail(null);
-      localStorage.clear();
-      toast.success("Logged out successfully.");
-      navigate("/login");
-  };
+    console.log('Logging out...');
+    setToken(null);
+    setUser(null);
+    setEmail(null);
+  
+    // Remove items from localStorage and sessionStorage
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    sessionStorage.clear();
+  
+    // Debugging: Check if items are removed
+    console.log(localStorage.getItem('user'));  // Should log null
+    console.log(localStorage.getItem('token')); // Should log null
+  
+    toast.success("Logged out successfully.");
+  
+    window.history.replaceState(null, null, "/login");  // Prevent going back
+    navigate("/login", { replace: true });
 
+    // Force page reload to ensure no data remains in the app state
+    window.location.reload();
+  };
+  
   // Context values
   const values = {
     loading,

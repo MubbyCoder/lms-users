@@ -10,12 +10,14 @@ import Blog from '../pages/Blog';
 import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
 import VerifyCode from '../pages/VerifyCode';
+import BorrowedBook from '../pages/BorrowedBook'
+
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path='/forgot_password' element={<ForgotPassword />} />
       <Route path='/reset_password' element={<ResetPassword />} />
@@ -23,6 +25,7 @@ const AppRoutes = () => {
       <Route path='/dashboard' element={<Dashboard />} />
       <Route path='/blog' element={<Blog />} />
       <Route path='/contactus' element={<ContactUs />} />
+      <Route path="/borrowedbooks" element={<BorrowedBook />} />
     </Routes>
   );
 };

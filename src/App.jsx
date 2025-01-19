@@ -1,16 +1,16 @@
-/* eslint-disable react/jsx-no-undef */
+
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Layout from './components/Layout';
 import AppRoutes from './routes/AppRoutes';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import AuthProvider from './contexts/AuthContext';
 
 function App() {
   return (
     <Router>
-      <Layout>
+      <AuthProvider>
         <AppRoutes />
         <ToastContainer
           position="top-right"
@@ -24,7 +24,7 @@ function App() {
           pauseOnHover
           theme="colored"
         />
-      </Layout>
+      </AuthProvider>
     </Router>
   );
 }

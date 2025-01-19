@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebar.jsx";
+import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FaStar, FaRegStar } from "react-icons/fa"; // Star icons

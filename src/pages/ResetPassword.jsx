@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -13,7 +13,7 @@ const ResetPassword = () => {
   const formik = useFormik({
     initialValues: {
       email: "",
-      verificationCode: "",
+      verificationCode: ["", "", "", ""], // Array for 4-digit code
       password: "",
       confirmPassword: "",
     },
@@ -21,9 +21,13 @@ const ResetPassword = () => {
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
-      verificationCode: Yup.string()
-        .length(4, "Code must be 4 digits")
-        .required("Verification code is required"),
+      verificationCode: Yup.array()
+        .of(
+          Yup.string()
+            .matches(/^\d$/, "Each digit must be a number")
+            .required("Required")
+        )
+        .length(4, "Verification code must be 4 digits"),
       password: Yup.string()
         .min(6, "Password must be at least 6 characters")
         .required("Password is required"),
@@ -34,10 +38,10 @@ const ResetPassword = () => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        // Call resetPassword API from AuthContext
-        await resetPassword(values.email, values.verificationCode, values.password, values.confirmPassword);
-        toast.success("Password has been reset successfully!");
-        navigate("/login"); // Redirect to login page on success
+        const verificationCode = values.verificationCode.join(""); // Combine the 4 digits
+        await resetPassword(values.email, verificationCode, values.password);
+        toast.success("Password reset successful!");
+        navigate("/login");
       } catch (err) {
         toast.error(err?.response?.data?.message || "Error resetting password");
       } finally {
@@ -46,11 +50,25 @@ const ResetPassword = () => {
     },
   });
 
+  const handleCodeChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const updatedCode = [...formik.values.verificationCode || ["", "", "", ""]];
+      updatedCode[index] = value;
+      formik.setFieldValue("verificationCode", updatedCode);
+
+      // Automatically move to the next input
+      if (value && index < 3) {
+        document.getElementById(`code-input-${index + 1}`).focus();
+      }
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="w-full max-w-sm mx-auto bg-white p-6 shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Reset Password</h2>
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-300 p-4">
+      <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6 sm:p-8">
+        <h2 className="text-2xl font-extrabold text-center text-yellow-600 mb-6">Reset Password</h2>
+        <form onSubmit={formik.handleSubmit} className="space-y-6">
+          {/* Email */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email Address
@@ -59,7 +77,11 @@ const ResetPassword = () => {
               type="email"
               id="email"
               name="email"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className={`mt-2 block w-full px-4 py-2 border rounded-lg shadow-sm ${
+                formik.touched.email && formik.errors.email
+                  ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300 focus:ring-yellow-500 focus:border-yellow-500"
+              }`}
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -68,23 +90,28 @@ const ResetPassword = () => {
               <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>
             )}
           </div>
+
+          {/* Verification Code */}
           <div>
-            <label htmlFor="verificationCode" className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700">
               Verification Code
             </label>
-            <input
-              type="text"
-              id="verificationCode"
-              name="verificationCode"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              value={formik.values.verificationCode}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.verificationCode && formik.errors.verificationCode && (
-              <p className="text-red-500 text-sm mt-1">{formik.errors.verificationCode}</p>
-            )}
+            <div className="flex justify-between gap-4 mt-2">
+              {formik.values.verificationCode.map((code, index) => (
+                <input
+                  key={index}
+                  id={`code-input-${index}`}
+                  type="text"
+                  maxLength="1"
+                  value={code || ""}
+                  onChange={(e) => handleCodeChange(index, e.target.value)}
+                  className="w-12 h-12 text-center text-xl font-bold border-2 rounded-full focus:outline-none shadow-sm bg-gray-50 text-gray-800 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                />
+              ))}
+            </div>
           </div>
+
+          {/* Password */}
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               New Password
@@ -93,7 +120,11 @@ const ResetPassword = () => {
               type="password"
               id="password"
               name="password"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className={`mt-2 block w-full px-4 py-2 border rounded-lg shadow-sm ${
+                formik.touched.password && formik.errors.password
+                  ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300 focus:ring-yellow-500 focus:border-yellow-500"
+              }`}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -102,6 +133,8 @@ const ResetPassword = () => {
               <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>
             )}
           </div>
+
+          {/* Confirm Password */}
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
               Confirm Password
@@ -110,7 +143,11 @@ const ResetPassword = () => {
               type="password"
               id="confirmPassword"
               name="confirmPassword"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className={`mt-2 block w-full px-4 py-2 border rounded-lg shadow-sm ${
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+                  ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300 focus:ring-yellow-500 focus:border-yellow-500"
+              }`}
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -119,18 +156,30 @@ const ResetPassword = () => {
               <p className="text-red-500 text-sm mt-1">{formik.errors.confirmPassword}</p>
             )}
           </div>
-          <div className="mt-4">
+
+          {/* Submit Button */}
+          <div className="pt-4">
             <button
               type="submit"
-              className={`w-full ${
-                loading ? "bg-gray-400" : "bg-blue-600"
-              } hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none`}
+              className={`w-full py-2 px-4 rounded-lg shadow-md text-white font-bold ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-yellow-600 hover:bg-yellow-700 focus:ring-2 focus:ring-yellow-500"
+              }`}
               disabled={loading}
             >
               {loading ? "Resetting..." : "Reset Password"}
             </button>
           </div>
         </form>
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => navigate("/login")}
+            className="text-gray-500 hover:text-yellow-600 font-medium"
+          >
+            Return to Login
+          </button>
+        </div>
       </div>
     </div>
   );

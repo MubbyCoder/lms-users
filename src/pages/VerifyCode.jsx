@@ -4,58 +4,87 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const VerifyCode = () => {
-  const [verificationCode, setVerificationCode] = useState("");
+  const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
   const { verifyCode, loading, email } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If there's no email in the context, navigate back to the login/signup page
     if (!email) {
       toast.error("Please log in to verify your code.");
       navigate("/login");
     }
   }, [email, navigate]);
 
+  const handleCodeChange = (index, value) => {
+    if (/^\d?$/.test(value)) {
+      const updatedCode = [...verificationCode];
+      updatedCode[index] = value;
+      setVerificationCode(updatedCode);
+
+      // Automatically move focus to the next input if not the last one
+      if (value && index < 3) {
+        document.getElementById(`code-input-${index + 1}`).focus();
+      }
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Check if the verification code is entered
-    if (!verificationCode) {
-      toast.error("Please enter a verification code.");
+
+    // Check if all the code fields are filled
+    const fullCode = verificationCode.join("");
+    if (fullCode.length !== 4) {
+      toast.error("Please enter a valid 4-digit verification code.");
       return;
     }
+
     // Send email and verification code for validation
-    verifyCode(email, verificationCode);
+    verifyCode(email, fullCode);
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="w-full max-w-sm mx-auto bg-white p-6 shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Verify Code</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="verificationCode" className="block text-sm font-medium text-gray-700">
-              Enter the verification code
-            </label>
-            <input
-              type="text"
-              id="verificationCode"
-              name="verificationCode"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-            />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-800 to-gray-900 p-4">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 sm:p-8">
+        <h2 className="text-3xl font-extrabold text-center text-yellow-600 mb-4">Verify Code</h2>
+        <p className="text-center text-gray-600 mb-6">
+          Enter the 4-digit verification code sent to your email.
+        </p>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex justify-center gap-3">
+            {verificationCode.map((code, index) => (
+              <input
+                key={index}
+                id={`code-input-${index}`}
+                type="text"
+                maxLength="1"
+                value={code}
+                onChange={(e) => handleCodeChange(index, e.target.value)}
+                className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+              />
+            ))}
           </div>
-
-          <div className="mt-4">
+          <div>
             <button
               type="submit"
-              className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`w-full py-2 px-4 text-white font-bold rounded-lg shadow-md transition-colors ${
+                loading
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-yellow-600 hover:bg-yellow-700"
+              }`}
               disabled={loading}
             >
               {loading ? "Verifying..." : "Verify Code"}
             </button>
           </div>
         </form>
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => navigate("/login")}
+            className="text-gray-500 hover:text-yellow-600 font-medium transition-colors"
+          >
+            Return to Login
+          </button>
+        </div>
       </div>
     </div>
   );

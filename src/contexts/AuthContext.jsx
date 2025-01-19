@@ -91,7 +91,7 @@ const AuthProvider = ({ children }) => {
       setEmail(email); // Store email in state
       localStorage.setItem("email", email); // Save email to localStorage
       toast.success("Verification code sent to your email.");
-      navigate("/verify-code");
+      navigate("/verifyCode");
     } catch (error) {
       handleApiError(error, "Failed to send verification code.");
     } finally {
@@ -105,7 +105,7 @@ const AuthProvider = ({ children }) => {
     try {
       await axios.post(`${apiUrl}/auth/verifyCode`, { email, verificationCode });
       toast.success("Verification successful. You can now reset your password.");
-      navigate("/reset-password");
+      navigate("/reset_password");
     } catch (error) {
       handleApiError(error, "Verification failed. Please check the code.");
     } finally {
@@ -121,6 +121,7 @@ const AuthProvider = ({ children }) => {
         email,
         verificationCode,
         password,
+        confirmPassword: password,
       });
       toast.success("Password reset successful! Please log in.");
       navigate("/login");

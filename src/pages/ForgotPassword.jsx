@@ -22,7 +22,7 @@ const ForgotPassword = () => {
       setLoading(true);
       try {
         const res = await axios.post(
-          `${apiUrl}/auth/forgot-password`, // Fixed template string
+          `${apiUrl}/auth/forgot-password`,
           { email: values.email },
           {
             headers: {
@@ -33,9 +33,8 @@ const ForgotPassword = () => {
 
         if (res.status === 200) {
           toast.success("Verification code sent to your email.");
-          localStorage.setItem("email", values.email); // Store email
-          console.log("Navigating to /verify-code");
-          navigate("/verify-code");
+          localStorage.setItem("email", values.email);
+          navigate("/verifyCode");
         }
       } catch (err) {
         toast.error(err.response?.data?.message || "An error occurred.");
@@ -46,10 +45,15 @@ const ForgotPassword = () => {
   });
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="w-full max-w-sm mx-auto bg-white p-6 shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Forgot Password</h2>
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-800 to-gray-900 p-4">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 sm:p-8">
+        <h2 className="text-3xl font-extrabold text-center text-yellow-600 mb-4">
+          Forgot Password
+        </h2>
+        <p className="text-center text-gray-600 mb-6">
+          Enter your email address to receive a verification code.
+        </p>
+        <form onSubmit={formik.handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email Address
@@ -58,7 +62,12 @@ const ForgotPassword = () => {
               type="email"
               id="email"
               name="email"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your email"
+              className={`mt-2 w-full px-4 py-2 border rounded-lg shadow-sm ${
+                formik.touched.email && formik.errors.email
+                  ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300 focus:ring-yellow-500 focus:border-yellow-500"
+              }`}
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -67,16 +76,28 @@ const ForgotPassword = () => {
               <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>
             )}
           </div>
-          <div className="mt-4">
+          <div>
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
+              className={`w-full py-2 px-4 text-white font-bold rounded-lg shadow-md transition-colors ${
+                loading
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-yellow-600 hover:bg-yellow-700"
+              }`}
               disabled={loading}
             >
               {loading ? "Sending..." : "Send Verification Code"}
             </button>
           </div>
         </form>
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => navigate("/login")}
+            className="text-gray-500 hover:text-yellow-600 font-medium transition-colors"
+          >
+            Return to Login
+          </button>
+        </div>
       </div>
     </div>
   );

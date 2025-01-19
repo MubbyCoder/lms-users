@@ -11,6 +11,8 @@ const BorrowedBook = () => {
   const [selectedBook, setSelectedBook] = useState(null);
   const [review, setReview] = useState({ rating: 0, comment: "" });
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchBorrowedBooks = async () => {
       try {
@@ -20,7 +22,7 @@ const BorrowedBook = () => {
           return;
         }
         const response = await axios.get(
-          "http://localhost:5017/api/v1/Borrowedbooks/borrowed",
+          `${apiUrl}/Borrowedbooks/borrowed`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -45,7 +47,7 @@ const BorrowedBook = () => {
         return;
       }
       await axios.post(
-        `http://localhost:5017/api/v1/Borrowedbooks/return/${id}`,
+        `${apiUrl}Borrowedbooks/return/${id}`,
         {},
         {
           headers: {
@@ -90,7 +92,7 @@ const BorrowedBook = () => {
       }
 
       await axios.post(
-        `http://localhost:5017/api/v1/reviews/${selectedBook.book._id}`,
+        `${apiUrl}/reviews/${selectedBook.book._id}`,
         review,
         {
           headers: {

@@ -10,10 +10,12 @@ const Home = () => {
   const [reviews, setReviews] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get("http://localhost:5017/api/v1/books");
+        const response = await axios.get(`${apiUrl}/books`);
         setBooks(response.data?.data?.books || []);
       } catch (error) {
         console.error("Error fetching books:", error);
@@ -27,7 +29,7 @@ const Home = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get("http://localhost:5017/api/v1/reviews/all");
+        const response = await axios.get(`${apiUrl}/reviews/all`);
         const reviewsByBook = {};
 
         response.data?.data.forEach((review) => {
@@ -55,7 +57,7 @@ const Home = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5017/api/v1/books/search?title=${searchTerm}`
+        `${apiUrl}/books/search?title=${searchTerm}`
       );
 
       if (response.data.data.books.length === 0) {
@@ -80,7 +82,7 @@ const Home = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:5017/api/v1/Borrowedbooks/borrow/${id}`,
+        `${apiUrl}/Borrowedbooks/borrow/${id}`,
         {},
         {
           headers: {
